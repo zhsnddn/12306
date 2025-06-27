@@ -14,6 +14,7 @@
         <skip.checkstyle.check>true</skip.checkstyle.check>
         <maven-common-plugin.version>3.1.0</maven-common-plugin.version>
         <maven.compiler.target>17</maven.compiler.target>
+        <maven-checkstyle-plugin.version>3.1.0</maven-checkstyle-plugin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <lombok.version>1.18.30</lombok.version>
     </properties>
@@ -89,6 +90,34 @@
                     <source>17</source>
                     <target>17</target>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <configuration>
+                    <configLocation>./checkstyle/12306_checkstyle.xml
+                    </configLocation>
+                    <suppressionsLocation>
+                        ./checkstyle/12306_checkstyle_suppression.xml
+                    </suppressionsLocation>
+                    <!-- Do not scan the test directory for now -->
+                    <includeTestSourceDirectory>false</includeTestSourceDirectory>
+                    <consoleOutput>true</consoleOutput>
+                    <encoding>UTF-8</encoding>
+                    <skip>${skip.checkstyle.check}</skip>
+                    <violationSeverity>error</violationSeverity>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
