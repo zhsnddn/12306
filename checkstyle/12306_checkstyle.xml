@@ -25,9 +25,9 @@
         <property name="format" value="printStackTrace"/>
         <property name="message" value="Prohibit invoking printStackTrace in source code !"/>
     </module>
-<!--    <module name="LineLength">-->
-<!--        <property name="max" value="200"/>-->
-<!--    </module>-->
+    <module name="LineLength">
+        <property name="max" value="200"/>
+    </module>
     <module name="TreeWalker">
         <module name="AvoidStarImport">
             <property name="excludes" value="java.io,java.net,java.lang.Math"/>
