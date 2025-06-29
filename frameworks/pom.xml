@@ -11,8 +11,8 @@
     <artifactId>frameworks</artifactId>
     <packaging>pom</packaging>
 
-<!--    <modules>-->
-<!--        <module></module>-->
-<!--    </modules>-->
+    <modules>
+        <module>base</module>
+    </modules>
 
 </project>
