@@ -18,6 +18,7 @@
         <module>designpattern</module>
         <module>common</module>
         <module>distributedid</module>
+        <module>database</module>
     </modules>
 
 </project>
