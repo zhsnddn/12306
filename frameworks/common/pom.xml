@@ -7,7 +7,6 @@
         <artifactId>frameworks</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
     <artifactId>index12306-common-spring-boot-starter</artifactId>
 
     <dependencies>
