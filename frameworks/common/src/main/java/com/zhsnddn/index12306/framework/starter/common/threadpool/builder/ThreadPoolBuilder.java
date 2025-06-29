@@ -86,7 +86,7 @@ public final class ThreadPoolBuilder implements Builder<ThreadPoolExecutor> {
     @Override
     public ThreadPoolExecutor build() {
         if (threadFactory == null) {
-            Assert.notEmpty(threadNamePrefix, "The thread name prefix cannot be empty or an empty string.");
+            Assert.notEmpty(new String[]{threadNamePrefix}, "The thread name prefix cannot be empty or an empty string.");
             threadFactory = ThreadFactoryBuilder.builder().prefix(threadNamePrefix).daemon(isDaemon).build();
         }
         ThreadPoolExecutor executorService;

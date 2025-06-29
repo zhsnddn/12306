@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.zhsnddn.index12306</groupId>
-    <artifactId>dependencies</artifactId>
+    <artifactId>index12306-dependencies</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 

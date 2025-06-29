@@ -8,7 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>frameworks</artifactId>
+    <artifactId>index12306-frameworks</artifactId>
     <packaging>pom</packaging>
 
     <modules>
@@ -20,6 +20,7 @@
         <module>distributedid</module>
         <module>database</module>
         <module>log</module>
+        <module>web</module>
     </modules>
 
 </project>

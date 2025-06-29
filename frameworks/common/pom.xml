@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.zhsnddn.index12306</groupId>
-        <artifactId>frameworks</artifactId>
+        <artifactId>index12306-frameworks</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>index12306-common-spring-boot-starter</artifactId>
