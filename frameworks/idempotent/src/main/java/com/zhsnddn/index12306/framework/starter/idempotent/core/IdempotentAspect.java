@@ -17,7 +17,7 @@ public final class IdempotentAspect {
     /**
      * 增强方法标记 {@link Idempotent} 注解逻辑
      */
-    @Around("@annotation(annotation.com.zhsnddn.index12306.framework.starter.idempotent.Idempotent)")
+    @Around("@annotation(com.zhsnddn.index12306.framework.starter.idempotent.annotation.Idempotent)")
     public Object idempotentHandler(ProceedingJoinPoint joinPoint) throws Throwable {
         Idempotent idempotent = getIdempotent(joinPoint);
         IdempotentExecuteHandler instance = IdempotentExecuteHandlerFactory.getInstance(idempotent.scene(), idempotent.type());
