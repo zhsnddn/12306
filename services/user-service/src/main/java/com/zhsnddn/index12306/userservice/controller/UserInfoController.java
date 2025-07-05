@@ -4,6 +4,7 @@ import com.zhsnddn.index12306.framework.starter.convention.result.Result;
 import com.zhsnddn.index12306.framework.starter.web.Results;
 import com.zhsnddn.index12306.userservice.dto.req.UserRegisterReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.UserUpdateReqDTO;
+import com.zhsnddn.index12306.userservice.dto.resp.UserQueryRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserRegisterRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserUpdateRespDTO;
 import com.zhsnddn.index12306.userservice.service.UserLoginService;
@@ -39,5 +40,13 @@ public class UserInfoController {
     @PostMapping("/api/user-service/update")
     public Result<UserUpdateRespDTO> update(@RequestBody UserUpdateReqDTO requestParam) {
         return Results.success(userLoginService.update(requestParam));
+    }
+
+    /**
+     * 查询用户信息
+     */
+    @GetMapping("/api/user-service/query")
+    public Result<UserQueryRespDTO> query(@RequestParam("username") @NotNull String username) {
+        return Results.success(userLoginService.query(username));
     }
 }

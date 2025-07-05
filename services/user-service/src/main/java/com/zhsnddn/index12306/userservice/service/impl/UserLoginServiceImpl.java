@@ -9,6 +9,7 @@ import com.zhsnddn.index12306.userservice.dao.entity.UserDO;
 import com.zhsnddn.index12306.userservice.dao.mapper.UserMapper;
 import com.zhsnddn.index12306.userservice.dto.req.UserRegisterReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.UserUpdateReqDTO;
+import com.zhsnddn.index12306.userservice.dto.resp.UserQueryRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserRegisterRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserUpdateRespDTO;
 import com.zhsnddn.index12306.userservice.service.UserLoginService;
@@ -54,5 +55,16 @@ public class UserLoginServiceImpl implements UserLoginService {
                 .phone(userDO.getPhone())
                 .build();
         return response;
+    }
+
+    @Override
+    public UserQueryRespDTO query(String username) {
+        LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
+                .eq(UserDO::getUsername, username);
+        UserDO userDO = userMapper.selectOne(queryWrapper);
+        if(userDO == null) {
+            throw new ServiceException("用户不存在");
+        }
+        return BeanUtil.convert(userDO, UserQueryRespDTO.class);
     }
 }
