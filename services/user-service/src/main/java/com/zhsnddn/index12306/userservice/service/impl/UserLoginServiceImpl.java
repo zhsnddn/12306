@@ -2,7 +2,6 @@ package com.zhsnddn.index12306.userservice.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.zhsnddn.index12306.framework.starter.cache.DistributedCache;
 import com.zhsnddn.index12306.framework.starter.common.toolkit.BeanUtil;
@@ -18,11 +17,8 @@ import com.zhsnddn.index12306.userservice.dao.mapper.UserMapper;
 import com.zhsnddn.index12306.userservice.dao.mapper.UserPhoneMapper;
 import com.zhsnddn.index12306.userservice.dto.req.UserLoginReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.UserRegisterReqDTO;
-import com.zhsnddn.index12306.userservice.dto.req.UserUpdateReqDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserLoginRespDTO;
-import com.zhsnddn.index12306.userservice.dto.resp.UserQueryRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserRegisterRespDTO;
-import com.zhsnddn.index12306.userservice.dto.resp.UserUpdateRespDTO;
 import com.zhsnddn.index12306.userservice.service.UserLoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,10 +28,13 @@ import java.util.concurrent.TimeUnit;
 
 import static com.zhsnddn.index12306.userservice.common.enums.UserRegisterErrorCodeEnum.*;
 
+/**
+ * 用户登录接口实现
+ */
+
 @Service
 @RequiredArgsConstructor
 public class UserLoginServiceImpl implements UserLoginService {
-
 
     private final UserMapper userMapper;
     private final UserMailMapper userMailMapper;
@@ -45,9 +44,9 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Override
     public UserRegisterRespDTO register(UserRegisterReqDTO requestParam) {
         UserDO userDO = BeanUtil.convert(requestParam, UserDO.class);
-        if (hasUsername(userDO.getUsername())) {
-            throw new ServiceException(HAS_USERNAME_NOTNULL);
-        }
+//        if (hasUsername(userDO.getUsername())) {
+//            throw new ServiceException(HAS_USERNAME_NOTNULL);
+//        }
         int insert = userMapper.insert(userDO);
         if (insert < 1) {
             throw new ServiceException(USER_REGISTER_FAIL);
@@ -55,37 +54,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         return BeanUtil.convert(requestParam, UserRegisterRespDTO.class);
     }
 
-    @Override
-    public Boolean hasUsername(String username) {
-        LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
-                .eq(UserDO::getUsername, username);
-        return userMapper.selectOne(queryWrapper) == null ? Boolean.FALSE : Boolean.TRUE;
-    }
 
-    @Override
-    public UserUpdateRespDTO update(UserUpdateReqDTO requestParam) {
-        UserDO userDO = BeanUtil.convert(requestParam, UserDO.class);
-        LambdaUpdateWrapper<UserDO> updateWrapper = Wrappers.lambdaUpdate(UserDO.class)
-                .eq(UserDO::getUsername, userDO.getUsername());
-        userMapper.update(userDO, updateWrapper);
-        UserUpdateRespDTO response = UserUpdateRespDTO.builder()
-                .username(userDO.getUsername())
-                .realName(userDO.getRealName())
-                .phone(userDO.getPhone())
-                .build();
-        return response;
-    }
-
-    @Override
-    public UserQueryRespDTO query(String username) {
-        LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
-                .eq(UserDO::getUsername, username);
-        UserDO userDO = userMapper.selectOne(queryWrapper);
-        if (userDO == null) {
-            throw new ServiceException(HAVE_NOT_USER);
-        }
-        return BeanUtil.convert(userDO, UserQueryRespDTO.class);
-    }
 
     @Override
     public UserLoginRespDTO login(UserLoginReqDTO requestParam) {
