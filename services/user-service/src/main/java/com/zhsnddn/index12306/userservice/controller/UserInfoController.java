@@ -18,8 +18,6 @@ public class UserInfoController {
 
     private final UserService userService;
 
-
-
     /**
      * 更改用户信息
      */
@@ -32,7 +30,7 @@ public class UserInfoController {
      * 查询用户信息
      */
     @GetMapping("/api/user-service/query")
-    public Result<UserQueryRespDTO> query(@RequestParam("username") @NotNull String username) {
+    public Result<UserQueryRespDTO> queryByUsername(@RequestParam("username") @NotNull String username) {
         return Results.success(userService.queryByUsername(username));
     }
 
