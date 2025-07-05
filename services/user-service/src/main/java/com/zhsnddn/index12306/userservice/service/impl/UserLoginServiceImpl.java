@@ -1,5 +1,6 @@
 package com.zhsnddn.index12306.userservice.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -21,6 +22,8 @@ import com.zhsnddn.index12306.userservice.dto.resp.UserLoginRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserRegisterRespDTO;
 import com.zhsnddn.index12306.userservice.service.UserLoginService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,6 +35,7 @@ import static com.zhsnddn.index12306.userservice.common.enums.UserRegisterErrorC
  * 用户登录接口实现
  */
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserLoginServiceImpl implements UserLoginService {
@@ -51,13 +55,46 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Override
     public UserRegisterRespDTO register(UserRegisterReqDTO requestParam) {
         UserDO userDO = BeanUtil.convert(requestParam, UserDO.class);
-        if (hasUsername(userDO.getUsername())) {
+        if(hasUsername(userDO.getUsername())) {
+            throw new ServiceException(HAS_USERNAME_NOTNULL);
+        }
+        try{
+            int insert = userMapper.insert(userDO);
+            if(insert < 1) {
+                throw new ServiceException(USER_REGISTER_FAIL);
+            }
+        }catch (DuplicateKeyException dke){
+            log.error("用户名 [{}] 重复注册", requestParam.getUsername());
             throw new ServiceException(HAS_USERNAME_NOTNULL);
         }
 
-        int insert = userMapper.insert(userDO);
-        if (insert < 1) {
-            throw new ServiceException(USER_REGISTER_FAIL);
+        UserPhoneDO userPhoneDO = UserPhoneDO.builder()
+                .phone(requestParam.getPhone())
+                .username(requestParam.getUsername())
+                .build();
+        try {
+            int insert = userPhoneMapper.insert(userPhoneDO);
+            if(insert < 1) {
+                throw new ServiceException(USER_REGISTER_FAIL);
+            }
+        } catch (DuplicateKeyException dke) {
+            log.error("用户 [{}] 注册手机号 [{}] 重复", requestParam.getUsername(), requestParam.getPhone());
+            throw new ServiceException(PHONE_REGISTERED);
+        }
+        if (StrUtil.isNotBlank(requestParam.getMail())) {
+            UserMailDO userMailDO = UserMailDO.builder()
+                    .mail(requestParam.getMail())
+                    .username(requestParam.getUsername())
+                    .build();
+            try {
+                int insert = userMailMapper.insert(userMailDO);
+                if(insert < 1) {
+                    throw new ServiceException(USER_REGISTER_FAIL);
+                }
+            } catch (DuplicateKeyException dke) {
+                log.error("用户 [{}] 注册邮箱 [{}] 重复", requestParam.getUsername(), requestParam.getMail());
+                throw new ServiceException(MAIL_REGISTERED);
+            }
         }
         return BeanUtil.convert(requestParam, UserRegisterRespDTO.class);
     }

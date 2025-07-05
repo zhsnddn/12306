@@ -27,7 +27,7 @@ public class UserInfoController {
     }
 
     /**
-     * 查询用户信息
+     * 根据用户名查询用户信息
      */
     @GetMapping("/api/user-service/query")
     public Result<UserQueryRespDTO> queryByUsername(@RequestParam("username") @NotNull String username) {
