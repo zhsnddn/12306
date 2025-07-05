@@ -35,4 +35,9 @@ public interface UserLoginService {
      * 通过Token检查用户是否登录
      */
     UserLoginRespDTO checkLogin(String accessToken);
+
+    /**
+     * 用户退出登录
+     */
+    void logout(String accessToken);
 }

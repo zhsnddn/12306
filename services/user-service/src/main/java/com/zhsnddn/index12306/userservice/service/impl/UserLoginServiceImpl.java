@@ -173,4 +173,11 @@ public class UserLoginServiceImpl implements UserLoginService {
     public UserLoginRespDTO checkLogin(String accessToken) {
         return distributedCache.get(accessToken, UserLoginRespDTO.class);
     }
+
+    @Override
+    public void logout(String accessToken) {
+        if (StrUtil.isNotBlank(accessToken)) {
+            distributedCache.delete(accessToken);
+        }
+    }
 }
