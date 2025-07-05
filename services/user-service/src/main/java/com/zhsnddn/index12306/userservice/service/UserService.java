@@ -21,7 +21,7 @@ public interface  UserService {
     /**
      * 查询用户信息
      */
-    UserQueryRespDTO query(@NotNull String username);
+    UserQueryRespDTO queryByUsername(@NotNull String username);
 
     /**
      * 根据用户名查询用户无脱敏信息

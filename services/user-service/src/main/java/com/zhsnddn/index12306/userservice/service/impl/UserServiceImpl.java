@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserQueryRespDTO query(String username) {
+    public UserQueryRespDTO queryByUsername(String username) {
         LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
                 .eq(UserDO::getUsername, username);
         UserDO userDO = userMapper.selectOne(queryWrapper);
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserQueryActualRespDTO queryActualUserByUsername(String username) {
-        UserQueryRespDTO userQueryRespDTO = query(username);
+        UserQueryRespDTO userQueryRespDTO = queryByUsername(username);
         return BeanUtil.convert(userQueryRespDTO, UserQueryActualRespDTO.class);
     }
 }

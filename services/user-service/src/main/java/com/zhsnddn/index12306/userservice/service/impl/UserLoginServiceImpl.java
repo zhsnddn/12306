@@ -54,6 +54,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         if (hasUsername(userDO.getUsername())) {
             throw new ServiceException(HAS_USERNAME_NOTNULL);
         }
+
         int insert = userMapper.insert(userDO);
         if (insert < 1) {
             throw new ServiceException(USER_REGISTER_FAIL);

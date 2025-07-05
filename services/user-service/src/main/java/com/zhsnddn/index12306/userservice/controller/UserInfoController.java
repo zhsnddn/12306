@@ -33,7 +33,7 @@ public class UserInfoController {
      */
     @GetMapping("/api/user-service/query")
     public Result<UserQueryRespDTO> query(@RequestParam("username") @NotNull String username) {
-        return Results.success(userService.query(username));
+        return Results.success(userService.queryByUsername(username));
     }
 
     /**
