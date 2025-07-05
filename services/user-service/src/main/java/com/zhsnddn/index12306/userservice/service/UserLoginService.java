@@ -30,4 +30,9 @@ public interface UserLoginService {
      * 用户登录
      */
     UserLoginRespDTO login(UserLoginReqDTO requestParam);
+
+    /**
+     * 通过Token检查用户是否登录
+     */
+    UserLoginRespDTO checkLogin(String accessToken);
 }

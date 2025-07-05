@@ -42,4 +42,12 @@ public class UserLoginController {
         return Results.success(userLoginService.hasUsername(username));
     }
 
+    /**
+     * 通过 Token 检查用户是否登录
+     */
+    @GetMapping("/api/user-service/check-login")
+    public Result<UserLoginRespDTO> checkLogin(@RequestParam("accessToken") String accessToken) {
+        UserLoginRespDTO result = userLoginService.checkLogin(accessToken);
+        return Results.success(result);
+    }
 }

@@ -68,7 +68,7 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public UserRegisterRespDTO register(UserRegisterReqDTO requestParam) {
-        abstractChainContext.handler(UserChainMarkEnum.USER_REGISTER_FILTER.name(), requestParam);
+//        abstractChainContext.handler(UserChainMarkEnum.USER_REGISTER_FILTER.name(), requestParam);
         RLock lock = redissonClient.getLock(LOCK_USER_REGISTER + requestParam.getUsername());
         boolean tryLock = lock.tryLock();
         if (!tryLock) {
@@ -167,5 +167,10 @@ public class UserLoginServiceImpl implements UserLoginService {
                 .build();
         distributedCache.put(accessToken, JSON.toJSONString(actual), 30, TimeUnit.MINUTES);
         return actual;
+    }
+
+    @Override
+    public UserLoginRespDTO checkLogin(String accessToken) {
+        return distributedCache.get(accessToken, UserLoginRespDTO.class);
     }
 }
