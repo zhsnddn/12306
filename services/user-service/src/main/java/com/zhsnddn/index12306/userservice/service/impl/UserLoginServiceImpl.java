@@ -30,6 +30,8 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static com.zhsnddn.index12306.userservice.common.enums.UserRegisterErrorCodeEnum.*;
+
 @Service
 @RequiredArgsConstructor
 public class UserLoginServiceImpl implements UserLoginService {
@@ -44,11 +46,11 @@ public class UserLoginServiceImpl implements UserLoginService {
     public UserRegisterRespDTO register(UserRegisterReqDTO requestParam) {
         UserDO userDO = BeanUtil.convert(requestParam, UserDO.class);
         if (hasUsername(userDO.getUsername())) {
-            throw new ServiceException("用户名已存在");
+            throw new ServiceException(HAS_USERNAME_NOTNULL);
         }
         int insert = userMapper.insert(userDO);
         if (insert < 1) {
-            throw new ServiceException("注册失败");
+            throw new ServiceException(USER_REGISTER_FAIL);
         }
         return BeanUtil.convert(requestParam, UserRegisterRespDTO.class);
     }
@@ -80,7 +82,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                 .eq(UserDO::getUsername, username);
         UserDO userDO = userMapper.selectOne(queryWrapper);
         if (userDO == null) {
-            throw new ServiceException("用户不存在");
+            throw new ServiceException(HAVE_NOT_USER);
         }
         return BeanUtil.convert(userDO, UserQueryRespDTO.class);
     }
@@ -102,7 +104,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                     .eq(UserMailDO::getMail, usernameOrMailOrPhone);
             username = Optional.ofNullable(userMailMapper.selectOne(queryWrapper))
                     .map(UserMailDO::getMail)
-                    .orElseThrow(() -> new ClientException("用户名/手机号/邮箱不存在"));
+                    .orElseThrow(() -> new ClientException(HAVE_NOT_USERNAME_OR_PHONE_OR_MAIL));
         } else {
             LambdaQueryWrapper<UserPhoneDO> queryWrapper = Wrappers.lambdaQuery(UserPhoneDO.class)
                     .eq(UserPhoneDO::getPhone, usernameOrMailOrPhone);
@@ -117,7 +119,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                 .select(UserDO::getId, UserDO::getUsername, UserDO::getRealName);
         UserDO userDO = userMapper.selectOne(queryWrapper);
         if (userDO == null) {
-            throw new ClientException("账号不存在或密码错误");
+            throw new ClientException(USERNAME_OR_PASSWORD_ERROR);
         }
         UserInfoDTO userInfo = UserInfoDTO.builder()
                 .userId(String.valueOf(userDO.getId()))

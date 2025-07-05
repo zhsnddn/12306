@@ -41,7 +41,13 @@ public enum UserRegisterErrorCodeEnum implements IErrorCode {
 
     VERIFY_STATE_NOTNULL("A006014", "审核状态不能为空"),
 
-    REAL_NAME_NOTNULL("A006015", "真实姓名不能为空");
+    REAL_NAME_NOTNULL("A006015", "真实姓名不能为空"),
+
+    HAVE_NOT_USER("A006016", "用户不存在"),
+
+    HAVE_NOT_USERNAME_OR_PHONE_OR_MAIL("A006017", "用户名或手机号或邮箱不存在"),
+
+    USERNAME_OR_PASSWORD_ERROR("A006018", "用户名或密码错误");
 
     /**
      * 错误码
