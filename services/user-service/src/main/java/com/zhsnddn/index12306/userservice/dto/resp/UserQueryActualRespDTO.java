@@ -1,17 +1,13 @@
 package com.zhsnddn.index12306.userservice.dto.resp;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.zhsnddn.index12306.userservice.serialize.IdCardDesensitizationSerializer;
-import com.zhsnddn.index12306.userservice.serialize.PhoneDesensitizationSerializer;
 import lombok.Data;
 
 /**
- * 用户查询响应参数
+ * 用户查询无脱敏响应参数
  */
 
 @Data
-public class UserQueryRespDTO {
+public class UserQueryActualRespDTO {
 
     /**
      * 用户名
@@ -36,13 +32,11 @@ public class UserQueryRespDTO {
     /**
      * 证件号
      */
-    @JsonSerialize(using = IdCardDesensitizationSerializer.class)
     private String idCard;
 
     /**
      * 手机号
      */
-    @JsonSerialize(using = PhoneDesensitizationSerializer.class)
     private String phone;
 
     /**

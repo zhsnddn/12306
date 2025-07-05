@@ -8,6 +8,7 @@ import com.zhsnddn.index12306.framework.starter.convention.exception.ServiceExce
 import com.zhsnddn.index12306.userservice.dao.entity.UserDO;
 import com.zhsnddn.index12306.userservice.dao.mapper.UserMapper;
 import com.zhsnddn.index12306.userservice.dto.req.UserUpdateReqDTO;
+import com.zhsnddn.index12306.userservice.dto.resp.UserQueryActualRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserQueryRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserUpdateRespDTO;
 import com.zhsnddn.index12306.userservice.service.UserService;
@@ -53,5 +54,11 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException(HAVE_NOT_USER);
         }
         return BeanUtil.convert(userDO, UserQueryRespDTO.class);
+    }
+
+    @Override
+    public UserQueryActualRespDTO queryActualUserByUsername(String username) {
+        UserQueryRespDTO userQueryRespDTO = query(username);
+        return BeanUtil.convert(userQueryRespDTO, UserQueryActualRespDTO.class);
     }
 }
