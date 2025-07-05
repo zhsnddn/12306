@@ -1,12 +1,14 @@
 package com.zhsnddn.index12306.userservice.dto.resp;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
- * 用户注册响应参数
+ * 用户更改信息响应参数
  */
 @Data
-public class UserRegisterRespDTO {
+@Builder
+public class UserUpdateRespDTO {
 
     /**
      * 用户名

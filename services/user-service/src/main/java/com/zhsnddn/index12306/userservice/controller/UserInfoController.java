@@ -3,7 +3,9 @@ package com.zhsnddn.index12306.userservice.controller;
 import com.zhsnddn.index12306.framework.starter.convention.result.Result;
 import com.zhsnddn.index12306.framework.starter.web.Results;
 import com.zhsnddn.index12306.userservice.dto.req.UserRegisterReqDTO;
+import com.zhsnddn.index12306.userservice.dto.req.UserUpdateReqDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserRegisterRespDTO;
+import com.zhsnddn.index12306.userservice.dto.resp.UserUpdateRespDTO;
 import com.zhsnddn.index12306.userservice.service.UserLoginService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -31,4 +33,11 @@ public class UserInfoController {
         return Results.success(userLoginService.hasUsername(username));
     }
 
+    /**
+     * 更改用户信息
+     */
+    @PostMapping("/api/user-service/update")
+    public Result<UserUpdateRespDTO> update(@RequestBody UserUpdateReqDTO requestParam) {
+        return Results.success(userLoginService.update(requestParam));
+    }
 }
