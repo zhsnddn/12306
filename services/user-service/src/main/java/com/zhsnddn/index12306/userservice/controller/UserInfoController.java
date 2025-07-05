@@ -2,8 +2,10 @@ package com.zhsnddn.index12306.userservice.controller;
 
 import com.zhsnddn.index12306.framework.starter.convention.result.Result;
 import com.zhsnddn.index12306.framework.starter.web.Results;
+import com.zhsnddn.index12306.userservice.dto.req.UserLoginReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.UserRegisterReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.UserUpdateReqDTO;
+import com.zhsnddn.index12306.userservice.dto.resp.UserLoginRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserQueryRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserRegisterRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserUpdateRespDTO;
@@ -48,5 +50,13 @@ public class UserInfoController {
     @GetMapping("/api/user-service/query")
     public Result<UserQueryRespDTO> query(@RequestParam("username") @NotNull String username) {
         return Results.success(userLoginService.query(username));
+    }
+
+    /**
+     * 用户登录
+     */
+    @PostMapping("/api/user-service/login")
+    public Result<UserLoginRespDTO> login(@RequestBody UserLoginReqDTO requestParam) {
+        return Results.success(userLoginService.login(requestParam));
     }
 }
