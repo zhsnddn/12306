@@ -23,14 +23,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-
-    @Override
-    public Boolean hasUsername(String username) {
-        LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
-                .eq(UserDO::getUsername, username);
-        return userMapper.selectOne(queryWrapper) == null ? Boolean.FALSE : Boolean.TRUE;
-    }
-
     @Override
     public UserUpdateRespDTO update(UserUpdateReqDTO requestParam) {
         UserDO userDO = BeanUtil.convert(requestParam, UserDO.class);

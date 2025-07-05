@@ -42,11 +42,18 @@ public class UserLoginServiceImpl implements UserLoginService {
     private final DistributedCache distributedCache;
 
     @Override
+    public Boolean hasUsername(String username) {
+        LambdaQueryWrapper<UserDO> queryWrapper = Wrappers.lambdaQuery(UserDO.class)
+                .eq(UserDO::getUsername, username);
+        return userMapper.selectOne(queryWrapper) == null ? Boolean.FALSE : Boolean.TRUE;
+    }
+
+    @Override
     public UserRegisterRespDTO register(UserRegisterReqDTO requestParam) {
         UserDO userDO = BeanUtil.convert(requestParam, UserDO.class);
-//        if (hasUsername(userDO.getUsername())) {
-//            throw new ServiceException(HAS_USERNAME_NOTNULL);
-//        }
+        if (hasUsername(userDO.getUsername())) {
+            throw new ServiceException(HAS_USERNAME_NOTNULL);
+        }
         int insert = userMapper.insert(userDO);
         if (insert < 1) {
             throw new ServiceException(USER_REGISTER_FAIL);

@@ -16,6 +16,11 @@ import jakarta.validation.constraints.NotNull;
 public interface UserLoginService {
 
     /**
+     * 校验用户名是否存在
+     */
+    Boolean hasUsername(@NotNull String username);
+
+    /**
      * 注册用户
      */
     UserRegisterRespDTO register(UserRegisterReqDTO requestParam);

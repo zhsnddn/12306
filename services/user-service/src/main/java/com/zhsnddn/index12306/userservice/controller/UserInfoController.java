@@ -18,13 +18,7 @@ public class UserInfoController {
 
     private final UserService userService;
 
-    /**
-     * 检查用户名是否存在
-     */
-    @GetMapping("/api/user-service/has-username")
-    public Result<Boolean> hasUsername(@RequestParam("username") @NotNull String username) {
-        return Results.success(userService.hasUsername(username));
-    }
+
 
     /**
      * 更改用户信息
