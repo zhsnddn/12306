@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.zhsnddn.index12306.userservice.common.constant.RedisKeyConstant.USER_DELETION;
 import static com.zhsnddn.index12306.userservice.common.constant.RedisKeyConstant.USER_REGISTER_REUSE_SHARDING;
@@ -92,6 +93,16 @@ public class UserServiceImpl implements UserService {
     public UserQueryActualRespDTO queryActualUserByUsername(String username) {
         UserQueryRespDTO userQueryRespDTO = queryByUsername(username);
         return BeanUtil.convert(userQueryRespDTO, UserQueryActualRespDTO.class);
+    }
+
+    @Override
+    public Integer queryUserDeletionNum(Integer idType, String idCard) {
+        LambdaQueryWrapper<UserDeletionDO> queryWrapper = Wrappers.lambdaQuery(UserDeletionDO.class)
+                .eq(UserDeletionDO::getIdType, idType)
+                .eq(UserDeletionDO::getIdCard, idCard);
+        // TODO 此处应该先查缓存
+        Long deletionCount = userDeletionMapper.selectCount(queryWrapper);
+        return Optional.ofNullable(deletionCount).map(Long::intValue).orElse(0);
     }
 
     @Transactional(rollbackFor = Exception.class)

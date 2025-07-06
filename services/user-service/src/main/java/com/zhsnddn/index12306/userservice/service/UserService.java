@@ -31,6 +31,10 @@ public interface  UserService {
     UserQueryActualRespDTO queryActualUserByUsername(@NotEmpty String username);
 
     /**
+     * 根据证件类型和证件号查询注销次数
+     */
+    Integer queryUserDeletionNum(Integer idType, String idCard);
+    /**
      * 注销用户
      */
     void deletion(@Valid UserDeletionReqDTO requestParam);
