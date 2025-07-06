@@ -45,10 +45,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserUpdateRespDTO update(UserUpdateReqDTO requestParam) {
+        UserQueryRespDTO userQueryRespDTO = queryByUsername(requestParam.getUsername());
         UserDO userDO = BeanUtil.convert(requestParam, UserDO.class);
-        LambdaUpdateWrapper<UserDO> updateWrapper = Wrappers.lambdaUpdate(UserDO.class)
-                .eq(UserDO::getUsername, userDO.getUsername());
-        userMapper.update(userDO, updateWrapper);
+        LambdaUpdateWrapper<UserDO> userUpdateWrapper = Wrappers.lambdaUpdate(UserDO.class)
+                .eq(UserDO::getUsername, requestParam.getUsername());
+        userMapper.update(userDO, userUpdateWrapper);
+        if (StrUtil.isNotBlank(requestParam.getMail()) && !Objects.equals(requestParam.getMail(), userQueryRespDTO.getMail())) {
+            LambdaUpdateWrapper<UserMailDO> updateWrapper = Wrappers.lambdaUpdate(UserMailDO.class)
+                    .eq(UserMailDO::getMail, userQueryRespDTO.getMail());
+            userMailMapper.delete(updateWrapper);
+            UserMailDO userMailDO = UserMailDO.builder()
+                    .mail(requestParam.getMail())
+                    .username(requestParam.getUsername())
+                    .build();
+            userMailMapper.insert(userMailDO);
+        }
         UserUpdateRespDTO response = UserUpdateRespDTO.builder()
                 .username(userDO.getUsername())
                 .realName(userDO.getRealName())
