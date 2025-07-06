@@ -60,12 +60,21 @@ public class UserServiceImpl implements UserService {
                     .build();
             userMailMapper.insert(userMailDO);
         }
-        UserUpdateRespDTO response = UserUpdateRespDTO.builder()
+        if(StrUtil.isNotBlank(requestParam.getPhone()) && !Objects.equals(requestParam.getPhone(), userQueryRespDTO.getPhone())) {
+            LambdaUpdateWrapper<UserPhoneDO> updateWrapper = Wrappers.lambdaUpdate(UserPhoneDO.class)
+                    .eq(UserPhoneDO::getPhone, userQueryRespDTO.getPhone());
+            userPhoneMapper.delete(updateWrapper);
+            UserPhoneDO userPhoneDO = UserPhoneDO.builder()
+                   .phone(requestParam.getPhone())
+                   .username(requestParam.getUsername())
+                   .build();
+            userPhoneMapper.insert(userPhoneDO);
+        }
+        return UserUpdateRespDTO.builder()
                 .username(userDO.getUsername())
                 .realName(userDO.getRealName())
                 .phone(userDO.getPhone())
                 .build();
-        return response;
     }
 
     @Override
