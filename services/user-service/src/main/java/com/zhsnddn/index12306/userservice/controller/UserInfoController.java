@@ -2,11 +2,13 @@ package com.zhsnddn.index12306.userservice.controller;
 
 import com.zhsnddn.index12306.framework.starter.convention.result.Result;
 import com.zhsnddn.index12306.framework.starter.web.Results;
+import com.zhsnddn.index12306.userservice.dto.req.UserDeletionReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.UserUpdateReqDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserQueryActualRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserQueryRespDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.UserUpdateRespDTO;
 import com.zhsnddn.index12306.userservice.service.UserService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +44,13 @@ public class UserInfoController {
         return Results.success(userService.queryActualUserByUsername(username));
     }
 
+    /**
+     * 注销用户
+     */
+    @PostMapping("/api/user-service/deletion")
+    public Result<Void> deletion(@RequestBody @Valid UserDeletionReqDTO requestParam) {
+        userService.deletion(requestParam);
+        return Results.success();
+    }
 
 }

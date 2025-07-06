@@ -2,6 +2,7 @@ package com.zhsnddn.index12306.userservice.dao.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zhsnddn.index12306.framework.starter.database.base.BaseDO;
+import lombok.Builder;
 import lombok.Data;
 /**
  * 用户表实体

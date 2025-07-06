@@ -1,6 +1,7 @@
 package com.zhsnddn.index12306.userservice.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.system.UserInfo;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -9,6 +10,7 @@ import com.zhsnddn.index12306.framework.starter.common.toolkit.BeanUtil;
 import com.zhsnddn.index12306.framework.starter.convention.exception.ClientException;
 import com.zhsnddn.index12306.framework.starter.convention.exception.ServiceException;
 import com.zhsnddn.index12306.framework.starter.designpattern.chain.AbstractChainContext;
+import com.zhsnddn.index12306.framework.starter.user.core.UserContext;
 import com.zhsnddn.index12306.framework.starter.user.core.UserInfoDTO;
 import com.zhsnddn.index12306.framework.starter.user.toolkit.JWTUtil;
 import com.zhsnddn.index12306.userservice.common.enums.UserChainMarkEnum;
@@ -117,8 +119,6 @@ public class UserLoginServiceImpl implements UserLoginService {
         return BeanUtil.convert(requestParam, UserRegisterRespDTO.class);
     }
 
-
-
     @Override
     public UserLoginRespDTO login(UserLoginReqDTO requestParam) {
         String usernameOrMailOrPhone = requestParam.getUsernameOrMailOrPhone();
@@ -159,6 +159,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                 .realName(userDO.getRealName())
                 .build();
         String accessToken = JWTUtil.generateAccessToken(userInfo);
+        userInfo.setToken(accessToken);
         UserLoginRespDTO actual = UserLoginRespDTO.builder()
                 .userId(userInfo.getUserId())
                 .username(requestParam.getUsernameOrMailOrPhone())
@@ -176,6 +177,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public void logout(String accessToken) {
+        UserContext.removeUser();
         if (StrUtil.isNotBlank(accessToken)) {
             distributedCache.delete(accessToken);
         }
