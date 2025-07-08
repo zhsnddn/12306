@@ -8,6 +8,7 @@ import com.zhsnddn.index12306.framework.starter.user.core.UserContext;
 import com.zhsnddn.index12306.framework.starter.web.Results;
 import com.zhsnddn.index12306.userservice.dto.req.PassengerRemoveReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.PassengerReqDTO;
+import com.zhsnddn.index12306.userservice.dto.req.PassengerUpdateReqDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.PassengerRespDTO;
 import com.zhsnddn.index12306.userservice.service.PassengerService;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +63,7 @@ public class PassengerController {
             message = "正在修改乘车人，请稍后再试..."
     )
     @PostMapping("/api/user-service/passenger/update")
-    public Result<Void> updatePassenger(@RequestBody PassengerReqDTO requestParam) {
+    public Result<Void> updatePassenger(@RequestBody PassengerUpdateReqDTO requestParam) {
         passengerService.updatePassenger(requestParam);
         return Results.success();
     }

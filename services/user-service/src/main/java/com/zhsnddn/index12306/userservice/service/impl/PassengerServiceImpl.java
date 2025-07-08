@@ -18,6 +18,7 @@ import com.zhsnddn.index12306.userservice.dao.entity.PassengerDO;
 import com.zhsnddn.index12306.userservice.dao.mapper.PassengerMapper;
 import com.zhsnddn.index12306.userservice.dto.req.PassengerRemoveReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.PassengerReqDTO;
+import com.zhsnddn.index12306.userservice.dto.req.PassengerUpdateReqDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.PassengerRespDTO;
 import com.zhsnddn.index12306.userservice.service.PassengerService;
 import lombok.RequiredArgsConstructor;
@@ -107,7 +108,7 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public void updatePassenger(PassengerReqDTO requestParam) {
+    public void updatePassenger(PassengerUpdateReqDTO requestParam) {
         String username = UserContext.getUsername();
         try {
             PassengerDO passengerDO = BeanUtil.convert(requestParam, PassengerDO.class);

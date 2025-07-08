@@ -2,6 +2,7 @@ package com.zhsnddn.index12306.userservice.service;
 
 import com.zhsnddn.index12306.userservice.dto.req.PassengerRemoveReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.PassengerReqDTO;
+import com.zhsnddn.index12306.userservice.dto.req.PassengerUpdateReqDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.PassengerRespDTO;
 
 import java.util.List;
@@ -29,5 +30,5 @@ public interface PassengerService {
     /**
      * 修改乘车人
      */
-    void updatePassenger(PassengerReqDTO requestParam);
+    void updatePassenger(PassengerUpdateReqDTO requestParam);
 }
