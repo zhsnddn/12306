@@ -22,7 +22,7 @@ public class UserLoginController {
     /**
      * 用户登录
      */
-    @PostMapping("/api/user-service/login")
+    @PostMapping("/api/user-service/v1/login")
     public Result<UserLoginRespDTO> login(@RequestBody UserLoginReqDTO requestParam) {
         return Results.success(userLoginService.login(requestParam));
     }

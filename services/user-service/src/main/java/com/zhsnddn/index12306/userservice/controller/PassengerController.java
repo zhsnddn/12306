@@ -6,6 +6,7 @@ import com.zhsnddn.index12306.framework.starter.idempotent.enums.IdempotentScene
 import com.zhsnddn.index12306.framework.starter.idempotent.enums.IdempotentTypeEnum;
 import com.zhsnddn.index12306.framework.starter.user.core.UserContext;
 import com.zhsnddn.index12306.framework.starter.web.Results;
+import com.zhsnddn.index12306.userservice.dto.req.PassengerRemoveReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.PassengerReqDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.PassengerRespDTO;
 import com.zhsnddn.index12306.userservice.service.PassengerService;
@@ -47,6 +48,38 @@ public class PassengerController {
     @PostMapping("/api/user-service/passenger/save")
     public Result<Void> savePassenger(@RequestBody PassengerReqDTO requestParam) {
         passengerService.savePassenger(requestParam);
+        return Results.success();
+    }
+
+    /**
+     * 修改乘车人
+     */
+    @Idempotent(
+            uniqueKeyPrefix = "index12306-user:lock_passenger-alter:",
+            key = "T(com.zhsnddn.index12306.framework.starter.user.core.UserContext).getUsername()",
+            type = IdempotentTypeEnum.SPEL,
+            scene = IdempotentSceneEnum.RESTAPI,
+            message = "正在修改乘车人，请稍后再试..."
+    )
+    @PostMapping("/api/user-service/passenger/update")
+    public Result<Void> updatePassenger(@RequestBody PassengerReqDTO requestParam) {
+        passengerService.updatePassenger(requestParam);
+        return Results.success();
+    }
+
+    /**
+     * 删除乘车人
+     */
+    @Idempotent(
+            uniqueKeyPrefix = "index12306-user:lock_passenger-alter:",
+            key = "T(com.zhsnddn.index12306.framework.starter.user.core.UserContext).getUsername()",
+            type = IdempotentTypeEnum.SPEL,
+            scene = IdempotentSceneEnum.RESTAPI,
+            message = "正在移除乘车人，请稍后再试..."
+    )
+    @PostMapping("/api/user-service/passenger/remove")
+    public Result<Void> removePassenger(@RequestBody PassengerRemoveReqDTO requestParam) {
+        passengerService.removerPassenger(requestParam);
         return Results.success();
     }
 }

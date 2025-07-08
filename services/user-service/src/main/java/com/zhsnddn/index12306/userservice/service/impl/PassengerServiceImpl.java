@@ -3,9 +3,9 @@ package com.zhsnddn.index12306.userservice.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdcardUtil;
 import cn.hutool.core.util.PhoneUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.zhsnddn.index12306.framework.starter.cache.DistributedCache;
@@ -16,6 +16,7 @@ import com.zhsnddn.index12306.framework.starter.user.core.UserContext;
 import com.zhsnddn.index12306.userservice.common.enums.VerifyStatusEnum;
 import com.zhsnddn.index12306.userservice.dao.entity.PassengerDO;
 import com.zhsnddn.index12306.userservice.dao.mapper.PassengerMapper;
+import com.zhsnddn.index12306.userservice.dto.req.PassengerRemoveReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.PassengerReqDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.PassengerRespDTO;
 import com.zhsnddn.index12306.userservice.service.PassengerService;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -72,6 +74,61 @@ public class PassengerServiceImpl implements PassengerService {
             throw ex;
         }
         distributedCache.delete(USER_PASSENGER_LIST + username);
+    }
+
+    @Override
+    public void removerPassenger(PassengerRemoveReqDTO requestParam) {
+        String username = UserContext.getUsername();
+        LambdaQueryWrapper<PassengerDO> queryWrapper = Wrappers.lambdaQuery(PassengerDO.class)
+                .eq(PassengerDO::getUsername, username)
+                .eq(PassengerDO::getId, requestParam.getId());
+        PassengerDO passengerDO = passengerMapper.selectOne(queryWrapper);
+        if (Objects.isNull(passengerDO)) {
+            throw new ClientException("乘车人不存在");
+        }
+        try {
+            LambdaUpdateWrapper<PassengerDO> deleteWrapper = Wrappers.lambdaUpdate(PassengerDO.class)
+                    .eq(PassengerDO::getUsername, username)
+                    .eq(PassengerDO::getId, requestParam.getId());
+            // 逻辑删除，修改数据库表记录 del_flag
+            int deleted = passengerMapper.delete(deleteWrapper);
+            if (!SqlHelper.retBool(deleted)) {
+                throw new ServiceException(String.format("[%s] 删除乘车人失败", username));
+            }
+        } catch (Exception ex) {
+            if (ex instanceof ServiceException) {
+                log.error("{}，请求参数：{}", ex.getMessage(), JSON.toJSONString(requestParam));
+            } else {
+                log.error("[{}] 删除乘车人失败，请求参数：{}", username, JSON.toJSONString(requestParam), ex);
+            }
+            throw ex;
+        }
+        distributedCache.delete(USER_PASSENGER_LIST + username);
+    }
+
+    @Override
+    public void updatePassenger(PassengerReqDTO requestParam) {
+        String username = UserContext.getUsername();
+        try {
+            PassengerDO passengerDO = BeanUtil.convert(requestParam, PassengerDO.class);
+            passengerDO.setUsername(username);
+            LambdaUpdateWrapper<PassengerDO> updateWrapper = Wrappers.lambdaUpdate(PassengerDO.class)
+                    .eq(PassengerDO::getUsername, username)
+                    .eq(PassengerDO::getId, requestParam.getId());
+            int updated = passengerMapper.update(passengerDO, updateWrapper);
+            if (!SqlHelper.retBool(updated)) {
+                throw new ServiceException(String.format("[%s] 更改乘车人失败", username));
+            }
+        } catch (Exception ex) {
+            if (ex instanceof ServiceException) {
+                log.error("{}，请求参数：{}", ex.getMessage(), JSON.toJSONString(requestParam));
+            } else {
+                log.error("[{}] 新增乘车人失败，请求参数：{}", username, JSON.toJSONString(requestParam), ex);
+            }
+            throw ex;
+        }
+        distributedCache.delete(USER_PASSENGER_LIST + username);
+
     }
 
     private String getActualUserPassengerListStr(String username) {

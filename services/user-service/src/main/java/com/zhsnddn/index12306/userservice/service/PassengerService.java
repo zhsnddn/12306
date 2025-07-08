@@ -1,5 +1,6 @@
 package com.zhsnddn.index12306.userservice.service;
 
+import com.zhsnddn.index12306.userservice.dto.req.PassengerRemoveReqDTO;
 import com.zhsnddn.index12306.userservice.dto.req.PassengerReqDTO;
 import com.zhsnddn.index12306.userservice.dto.resp.PassengerRespDTO;
 
@@ -19,4 +20,14 @@ public interface PassengerService {
      * 新增乘车人
      */
     void savePassenger(PassengerReqDTO requestParam);
+
+    /**
+     * 删除乘车人
+     */
+    void removerPassenger(PassengerRemoveReqDTO requestParam);
+
+    /**
+     * 修改乘车人
+     */
+    void updatePassenger(PassengerReqDTO requestParam);
 }
