@@ -44,15 +44,4 @@ public final class DateUtil {
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(pattern);
         return localDateTime.format(outputFormatter);
     }
-
-    @SneakyThrows
-    public static void main(String[] args) {
-        String startTimeStr = "2022-10-01 01:00:00";
-        String endTimeStr = "2022-10-01 12:23:00";
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startTime = formatter.parse(startTimeStr);
-        Date endTime = formatter.parse(endTimeStr);
-        String calculateHourDifference = calculateHourDifference(startTime, endTime);
-        log.info("开始时间：{}，结束时间：{}，两个时间相差时分：{}", startTimeStr, endTimeStr, calculateHourDifference);
-    }
 }

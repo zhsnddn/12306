@@ -34,9 +34,6 @@ public class TicketServiceImpl implements TicketService {
     private final TrainStationRelationMapper trainStationRelationMapper;
     private final TrainStationPriceMapper trainStationPriceMapper;
 
-    /**
-     * 根据条件查询车票
-     */
     @Override
     public TicketPageQueryRespDTO pageListTicketQueryV1(TicketPageQueryReqDTO requestParam) {
 
