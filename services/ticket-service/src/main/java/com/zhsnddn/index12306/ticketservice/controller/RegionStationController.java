@@ -1,5 +1,6 @@
 package com.zhsnddn.index12306.ticketservice.controller;
 
+import com.zhsnddn.index12306.framework.starter.convention.exception.ClientException;
 import com.zhsnddn.index12306.framework.starter.convention.result.Result;
 import com.zhsnddn.index12306.framework.starter.web.Results;
 import com.zhsnddn.index12306.ticketservice.dto.resp.StationQueryRespDTO;

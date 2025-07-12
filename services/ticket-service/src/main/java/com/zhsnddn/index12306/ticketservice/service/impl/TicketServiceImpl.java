@@ -18,9 +18,9 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static cn.hutool.core.date.DateUtil.betweenDay;
 import static com.zhsnddn.index12306.ticketservice.toolkit.DateUtil.convertDateToLocalTime;
 
 
@@ -73,7 +73,7 @@ public class TicketServiceImpl implements TicketService {
             if (StrUtil.isNotBlank(trainDO.getTrainTag())) {
                 result.setTrainTags(StrUtil.split(trainDO.getTrainTag(), ","));
             }
-            long betweenDay = cn.hutool.core.date.DateUtil.betweenDay(each.getDepartureTime(), each.getArrivalTime(), false);
+            long betweenDay = betweenDay(each.getDepartureTime(), each.getArrivalTime(), false);
             result.setDaysArrived((int) betweenDay);
             result.setSaleStatus(new Date().after(trainDO.getSaleTime()) ? 0 : 1);
             result.setSaleTime(convertDateToLocalTime(trainDO.getSaleTime(), "MM-dd HH:mm"));
