@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import com.zhsnddn.index12306.framework.starter.cache.DistributedCache;
 import com.zhsnddn.index12306.framework.starter.cache.toolkit.CacheUtil;
+import com.zhsnddn.index12306.framework.starter.designpattern.chain.AbstractChainContext;
+import com.zhsnddn.index12306.ticketservice.common.enums.TicketChainMarkEnum;
 import com.zhsnddn.index12306.ticketservice.dao.entity.*;
 import com.zhsnddn.index12306.ticketservice.dao.mapper.*;
 import com.zhsnddn.index12306.ticketservice.dto.domain.SeatClassDTO;
@@ -49,10 +51,11 @@ public class TicketServiceImpl implements TicketService {
     private final DistributedCache distributedCache;
     private final RedissonClient redissonClient;
     private final SeatMarginCacheLoader seatMarginCacheLoader;
+    private final AbstractChainContext abstractChainContext;
 
     @Override
     public TicketPageQueryRespDTO pageListTicketQueryV1(TicketPageQueryReqDTO requestParam) {
-        //TODO:使用责任链过滤不合理数据
+        abstractChainContext.handler(TicketChainMarkEnum.TRAIN_QUERY_FILTER.name(), requestParam);
         StringRedisTemplate stringRedisTemplate = (StringRedisTemplate) distributedCache.getInstance();
         List<Object> stationDetails = stringRedisTemplate.opsForHash()
                 .multiGet(REGION_TRAIN_STATION_MAPPING, Lists.newArrayList(requestParam.getFromStation(), requestParam.getToStation()));

@@ -1,4 +1,4 @@
-package com.zhsnddn.index12306.userservice.service.handler.filter.user;
+package com.zhsnddn.index12306.userservice.service.handler.user.filter;
 
 import com.zhsnddn.index12306.framework.starter.designpattern.chain.AbstractChainHandler;
 import com.zhsnddn.index12306.userservice.common.enums.UserChainMarkEnum;

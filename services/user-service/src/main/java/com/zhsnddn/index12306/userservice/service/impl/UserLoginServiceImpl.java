@@ -10,7 +10,6 @@ import com.zhsnddn.index12306.framework.starter.common.toolkit.BeanUtil;
 import com.zhsnddn.index12306.framework.starter.convention.exception.ClientException;
 import com.zhsnddn.index12306.framework.starter.convention.exception.ServiceException;
 import com.zhsnddn.index12306.framework.starter.designpattern.chain.AbstractChainContext;
-import com.zhsnddn.index12306.framework.starter.user.core.UserContext;
 import com.zhsnddn.index12306.framework.starter.user.core.UserInfoDTO;
 import com.zhsnddn.index12306.framework.starter.user.toolkit.JWTUtil;
 import com.zhsnddn.index12306.userservice.common.enums.UserChainMarkEnum;
@@ -177,7 +176,6 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public void logout(String accessToken) {
-        UserContext.removeUser();
         if (StrUtil.isNotBlank(accessToken)) {
             distributedCache.delete(accessToken);
         }
