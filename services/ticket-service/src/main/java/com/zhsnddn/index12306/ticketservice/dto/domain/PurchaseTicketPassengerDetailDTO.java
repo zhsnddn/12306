@@ -3,7 +3,7 @@ package com.zhsnddn.index12306.ticketservice.dto.domain;
 import lombok.Data;
 
 /**
- * 购票乘车人实体
+ * 购票乘车人详情实体
  */
 @Data
 public class PurchaseTicketPassengerDetailDTO {
